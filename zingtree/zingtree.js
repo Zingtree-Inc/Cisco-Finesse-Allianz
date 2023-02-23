@@ -1,7 +1,7 @@
 /** Zingtree Configuration Details**/
 var domainName = 'https://zingtree.com';
 var apiKey = '';
-var showHistory=0; 
+var showHistory=1; 
 /** Zingtree Configuration Details**/
 
 var finesse = finesse || {};
@@ -20,17 +20,28 @@ finesse.modules.zingtree = (function ($) {
 	handleNewDialog = function(dialog) {
         // call the displayCall handler
 		var callVars = dialog.getMediaProperties();
+                console.log("Zingtree log:"+JSON.stringify(callVars));
 		// Getting Zingtree TreeID from Callflow
-		var Treeid = dialog.getMediaProperties().TreeID;       
+		var Treeid = callVars["user.TreeID"];
 		
 		if(user.getExtension()!=dialog.getFromAddress())
 		{
+var querystring="";
+for (var key in callVars) {
+
+       if(key.startswith('CF_'))
+       {
+		querystring=querystring+"&zv_"+key=callVars[i];
+       }
+
+   }
+console.log("Zingtree variable:"+querystring);
 
 			if(Treeid!="")
                         {
 			$("#displayOut").text("");			
 			// Loading Zingtree url into iframe
-			$("#contentPage").attr("src", "" + DomainName + "/show/" + Treeid + "?agent_mode=1");
+			$("#contentPage").attr("src", ""+domainName +"/deploy/tree.php?tree_id="+Treeid+"&apikey="+apiKey+"&show_history="+showHistory+""+querystring+");
 			
 			// Setting Zingtree page height
 			$("#contentPage").attr("height","500");			
