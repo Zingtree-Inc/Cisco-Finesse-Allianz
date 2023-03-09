@@ -19,29 +19,33 @@ finesse.modules.zingtree = (function ($) {
 
         handleNewDialog = function (dialog) {
             // call the displayCall handler
-            var callVars = dialog.getMediaProperties();            
-            // Getting Zingtree TreeID from Media Properties
-            var Treeid = callVars["user.TreeID"];
+            const callVars = dialog.getMediaProperties();
+
+            // Getting Zingtree TreeID from Callflow
+            var Treeid = callVars["Call.user.TreeID"];
+            // Getting Zingtree custom variable
+            var querystring = "";
+            for (var key in callVars) {
+
+                if (key.startsWith("Call.user.CF_")) {
+                    var param = key.replace("Call.user.CF_", "");
+                    querystring = querystring + "&zv_" + param + "=" + callVars[key];
+                }
+            }
+
 
             if (user.getExtension() != dialog.getFromAddress()) {
-                //Getting Zingtree variables from Media Properties and building string to pass to Zingtree url. (If Variables starts with CF_)
-                var querystring = "";
-                for (var key in callVars) {
-                    if (key.startswith('CF_')) {
-                        querystring = querystring + "&zv_" + key = callVars[i];
-                    }
-                }
-                
-
+                console.log("zingtreelog" + Treeid);
                 if (Treeid != "") {
                     $("#displayOut").text("");
                     // Loading Zingtree url into iframe
                     $("#contentPage").attr("src", "" + domainName + "/deploy/tree.php?tree_id=" + Treeid + "&apikey=" + apiKey + "&show_history=" + showHistory + "" + querystring + "");
+
                     // Setting Zingtree page height
-                    $("#contentPage").attr("height", "500"); gadgets.window.adjustHeight();
+                    $("#contentPage").attr("height", "500");
+                    gadgets.window.adjustHeight();
                 }
             }
-
 
         },
 
