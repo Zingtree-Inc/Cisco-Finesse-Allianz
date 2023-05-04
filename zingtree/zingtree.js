@@ -20,15 +20,16 @@ finesse.modules.zingtree = (function ($) {
         handleNewDialog = function (dialog) {
             // call the displayCall handler
             const callVars = dialog.getMediaProperties();
-
+            console.log("Zingtree data:"+ callVars);
             // Getting Zingtree TreeID from Callflow
-            var Treeid = callVars["Call.user.TreeID"];
+            var Treeid = callVars["user.TreeID"];
+            console.log("Zingtree Treeid:"+Treeid);
             // Getting Zingtree custom variable
             var querystring = "";
             for (var key in callVars) {
 
-                if (key.startsWith("Call.user.CF_")) {
-                    var param = key.replace("Call.user.CF_", "");
+                if (key.startsWith("user.CF_")) {
+                    var param = key.replace("user.CF_", "");
                     querystring = querystring + "&zv_" + param + "=" + callVars[key];
                 }
             }
@@ -39,7 +40,7 @@ finesse.modules.zingtree = (function ($) {
                 if (Treeid != "") {
                     $("#displayOut").text("");
                     // Loading Zingtree url into iframe
-                    $("#contentPage").attr("src", "" + domainName + "/deploy/tree.php?tree_id=" + Treeid + "&apikey=" + apiKey + "&show_history=" + showHistory + "" + querystring + "");
+                    $("#contentPage").attr("src", "" + domainName + "/deploy/tree.php?tree_id=" + Treeid + "&apikey=" + apiKey + "&show_history=" + showHistory + "");
 
                     // Setting Zingtree page height
                     $("#contentPage").attr("height", "500");
