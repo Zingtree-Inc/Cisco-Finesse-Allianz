@@ -1,7 +1,7 @@
 /** Zingtree Configuration Details**/
 var domainName = 'https://zingtree.com';
 var apiKey = '';
-var showHistory = 1;
+var showHistory = 0;
 /** Zingtree Configuration Details**/
 
 var finesse = finesse || {};
@@ -19,8 +19,7 @@ finesse.modules.zingtree = (function ($) {
 
         handleNewDialog = function (dialog) {
             // call the displayCall handler
-            const callVars = dialog.getMediaProperties();
-            //console.log("Zingtree data:"+ callVars);
+            const callVars = dialog.getMediaProperties();            
             // Getting Zingtree TreeID from Callflow
             var Treeid = callVars["user.TreeID"];
             
@@ -37,13 +36,13 @@ finesse.modules.zingtree = (function ($) {
 
             if (user.getExtension() != dialog.getFromAddress()) {
                 
-                if (Treeid != "") {
+                if (Treeid != "" && Treeid!=undefined) {
                     $("#displayOut").text("");
                     // Loading Zingtree url into iframe
                     $("#contentPage").attr("src", "" + domainName + "/deploy/tree.php?agent_mode=1&tree_id=" + Treeid + "&apikey=" + apiKey + "&show_history=" + showHistory + "&source="+user.getFirstName()+""+querystring+"");
 
                     // Setting Zingtree page height
-                    $("#contentPage").attr("height", "600");
+                    $("#contentPage").attr("height", "800");
                     gadgets.window.adjustHeight();
                 }
             }
