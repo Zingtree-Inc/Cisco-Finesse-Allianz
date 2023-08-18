@@ -2,8 +2,10 @@
 var domainName = 'https://zingtree.com';
 var apiKey = '';
 var showHistory = 0;
-var initialcall='';
 /** Zingtree Configuration Details**/
+
+/** Store Call id to verify intial call hanguped **/
+var initialcall='';
 
 var finesse = finesse || {};
 finesse.gadget = finesse.gadget || {};
@@ -20,7 +22,7 @@ finesse.modules.zingtree = (function ($) {
 
         handleNewDialog = function (dialog) {
 
-	console.log("Hi New Call");
+	
             // call the displayCall handler
             const callVars = dialog.getMediaProperties();
             // Getting Zingtree TreeID from Callflow
@@ -52,14 +54,14 @@ initialcall=dialog.getId();
                     // Setting Zingtree page height
                     $("#contentPage").attr("height", 800);
                     gadgets.window.adjustHeight();
-		    console.log("browser height:"+$(window).height());
+		    
                 }
             }
 
         },
 
         handleEndDialog = function (dialog) {
-		console.log("zing hangup "+dialog.getId());
+		
 if(initialcall==dialog.getId())
 {
 initialcall='';
