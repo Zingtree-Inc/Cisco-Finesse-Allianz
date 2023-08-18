@@ -4,6 +4,9 @@ var apiKey = '';
 var showHistory = 0;
 /** Zingtree Configuration Details**/
 
+/** Store Call id to verify intial call hanguped **/
+var initialcall='';
+
 var finesse = finesse || {};
 finesse.gadget = finesse.gadget || {};
 
@@ -18,11 +21,18 @@ finesse.modules.zingtree = (function ($) {
         },
 
         handleNewDialog = function (dialog) {
+
+	
             // call the displayCall handler
-            const callVars = dialog.getMediaProperties();            
+            const callVars = dialog.getMediaProperties();
             // Getting Zingtree TreeID from Callflow
             var Treeid = callVars["user.TreeID"];
-            
+	if(initialcall=='')
+{
+initialcall=dialog.getId();
+}
+           
+
             // Getting Zingtree custom variable
             var querystring = "";
             for (var key in callVars) {
@@ -42,23 +52,32 @@ finesse.modules.zingtree = (function ($) {
                     $("#contentPage").attr("src", "" + domainName + "/deploy/tree.php?agent_mode=1&tree_id=" + Treeid + "&apikey=" + apiKey + "&show_history=" + showHistory + "&source="+user.getFirstName()+""+querystring+"");
 
                     // Setting Zingtree page height
-                    $("#contentPage").attr("height", "800");
+                    $("#contentPage").attr("height", 800);
                     gadgets.window.adjustHeight();
+		    
                 }
             }
 
         },
 
         handleEndDialog = function (dialog) {
-            $("#displayOut").text("Please wait for Incoming call");
+		
+if(initialcall==dialog.getId())
+{
+initialcall='';
+$("#displayOut").text("Please wait for Incoming call");
             $("#contentPage").attr("src", "");
-            $("#contentPage").attr("height", "100");
+            $("#contentPage").attr("height", "100px");
             gadgets.window.adjustHeight();
+}
+
+            
         },
 
         handleUserLoad = function (userevent) {
             // Get an instance of the dialogs collection and register handlers for dialog additions and
             // removals
+          
             dialogs = user.getDialogs({
                 onCollectionAdd: handleNewDialog,
                 onCollectionDelete: handleEndDialog
@@ -67,6 +86,8 @@ finesse.modules.zingtree = (function ($) {
         },
 
         handleUserChange = function (userevent) {
+
+		
 
             dialogs = user.getDialogs({
                 onCollectionAdd: handleNewDialog,
