@@ -44,16 +44,17 @@ finesse.modules.zingtree = (function ($) {
           // Loading Zingtree url into iframe
           $("#contentPage").attr(
             "src",
-            "" +
-              domainName +
-              "/deploy/tree.php?agent_mode=1&tree_id=" +
+            domainName +
+              "/live/" +
               Treeid +
+              "?" +
+              "agent_mode=1" +
               "&apikey=" +
               apiKey +
               "&show_history=" +
               showHistory +
               "&source=" +
-              user.getFirstName() +
+              user.getFullName() +
               "" +
               querystring +
               "",
